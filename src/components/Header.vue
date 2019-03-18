@@ -31,7 +31,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
-              href="#/signin"
+              href="#/login"
               v-on:click="setActive('signin')"
               :class="{ active: isActive('signin') }"
             >
