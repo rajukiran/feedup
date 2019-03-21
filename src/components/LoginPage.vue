@@ -1,64 +1,83 @@
 <template>
-    <div class="jumbotron">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6 offset-sm-3">
-                    <div>
-                        <h2>Login</h2>
-                        <form @submit.prevent="handleSubmit">
-                            <div class="form-group">
-                                <label class="pull-left" for="username">Username</label>
-                                <input type="text" v-model="username" name="username" class="form-control" :class="{ 'is-invalid': submitted && !username }" />
-                                <div v-show="submitted && !username" class="invalid-feedback">Username is required</div>
-                            </div>
-                            <div class="form-group">
-                                <label class="pull-left" htmlFor="password">Password</label>
-                                <input type="password" v-model="password" name="password" class="form-control" :class="{ 'is-invalid': submitted && !password }" />
-                                <div v-show="submitted && !password" class="invalid-feedback">Password is required</div>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-primary" :disabled="status.loggingIn">Login</button>
-                                <img v-show="status.loggingIn" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                                <router-link to="/register" class="btn btn-link">Register</router-link>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <form id="form_login">
+    <h1>Login</h1>
+    <p>
+      <input
+        type="text"
+        name="login"
+        value
+        placeholder="Username"
+        class="form-control"
+        id="login"
+        maxlength="80"
+        size="30"
+      >
+    </p>
+    <p>
+      <input
+        type="password"
+        name="password"
+        value
+        placeholder="Password"
+        class="form-control"
+        id="password"
+        size="30"
+      >
+    </p>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox"> Remember me
+      </label>
     </div>
+    <p>
+      <button class="btn btn-primary" :disabled="status.registering">Login</button>
+    </p>
+  </form>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+// import { mapState, mapActions } from 'vuex'
 export default {
-    name: "login",
-    data () {
-        return {
-            username: '',
-            password: '',
-            submitted: false,
-            status: {
-                loggingIn: false
-            }
-        }
-    },
-    // computed: {
-    //     ...mapState('account', ['status'])
-    // },
-    // created () {
-    //     // reset login status
-    //     this.logout();
-    // },
-    // methods: {
-    //     ...mapActions('account', ['login', 'logout']),
-    //     handleSubmit (e) {
-    //         this.submitted = true;
-    //         const { username, password } = this;
-    //         if (username && password) {
-    //             this.login({ username, password })
-    //         }
-    //     }
-    // }
+  //   name: "login",
+  data() {
+    return {
+      username: "",
+      password: "",
+      submitted: false,
+      status: {
+        loggingIn: false
+      }
+    };
+  }
+  // computed: {
+  //     ...mapState('account', ['status'])
+  // },
+  // created () {
+  //     // reset login status
+  //     this.logout();
+  // },
+  // methods: {
+  //     ...mapActions('account', ['login', 'logout']),
+  //     handleSubmit (e) {
+  //         this.submitted = true;
+  //         const { username, password } = this;
+  //         if (username && password) {
+  //             this.login({ username, password })
+  //         }
+  //     }
+  // }
 };
 </script>
+<style lang="scss">
+#form_login {
+  left: 50%;
+  top: 50%;
+  position: absolute;
+  -webkit-transform: translate3d(-50%, -50%, 0);
+  -moz-transform: translate3d(-50%, -50%, 0);
+  transform: translate3d(-50%, -50%, 0);
+  border: 1px solid #cccccc;
+  border-radius: 10px;
+  padding: 50px 20px 50px 20px;
+}
+</style>
