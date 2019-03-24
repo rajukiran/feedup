@@ -9,6 +9,17 @@ import Header from "./components/Header";
 export default {
   components: {
     Header
+  },
+  data() {
+    return {
+      isAuthenticated: false
+    };
+  },
+  mounted() {
+    this.isAuthenticated = localStorage.getItem("isAuthenticated");
+    // if (this.isAuthenticated) {
+    //   that.$router.push("/dashboard");
+    // }
   }
 };
 </script>

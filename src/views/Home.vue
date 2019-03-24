@@ -23,7 +23,7 @@
               required
             ></textarea>
           </div>
-          <button class="btn btn-primary" type="submit">Feed Up</button>
+          <input type="button" class="btn btn-primary btnSeccion" id="btnSeccion3" value="Feed Up">
         </form>
         <FeedContent/>
       </div>
@@ -45,7 +45,16 @@ export default {
     FeedContent
   },
   data() {
-    return {};
+    return {
+      isAuthenticated: false
+    };
+  },
+  mounted() {
+    var that = this;
+    this.isAuthenticated = localStorage.getItem("isAuthenticated");
+    if (this.isAuthenticated) {
+      that.$router.push("/dashboard");
+    }
   }
 };
 </script>

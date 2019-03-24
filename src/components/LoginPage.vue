@@ -1,71 +1,66 @@
 <template>
-  <form id="form_login">
-    <h1>Login</h1>
-    <p>
-      <input
-        type="text"
-        name="login"
-        value
-        placeholder="Username"
-        class="form-control"
-        id="login"
-        maxlength="80"
-        size="30"
-      >
-    </p>
-    <p>
-      <input
-        type="password"
-        name="password"
-        value
-        placeholder="Password"
-        class="form-control"
-        id="password"
-        size="30"
-      >
-    </p>
-    <div class="checkbox">
-      <label>
-        <input type="checkbox"> Remember me
-      </label>
-    </div>
-    <p>
-      <button class="btn btn-primary" :disabled="status.registering">Login</button>
-    </p>
-  </form>
+  <div>
+    <div class="alert alert-danger" role="alert" v-if="showError.status">{{showError.data}}</div>
+
+    <form id="form_login" v-on:submit.prevent="onSubmit(username, password);">
+      <label for="validationServer03">Login</label>
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          id="validationServer03"
+          placeholder="Username"
+          v-model="username"
+        >
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          class="form-control"
+          id="validationServer03"
+          placeholder="Password"
+          v-model="password"
+        >
+      </div>
+      <!-- <div class="form-group" v-if="loginValidation.status">
+        <div class="alert alert-danger" role="alert">Please enter username/password</div>
+      </div>-->
+      <button class="btn btn-lg btn-primary pull-xs-right">Sign in</button>
+    </form>
+  </div>
 </template>
 
 <script>
-// import { mapState, mapActions } from 'vuex'
+import router from "vue-router";
+import { LOGIN } from "@/store/actions.type";
 export default {
-  //   name: "login",
   data() {
     return {
-      username: "",
-      password: "",
+      showError: {
+        status: false,
+        data: ""
+      },
+      loginValidation: {
+        status: false
+      },
       submitted: false,
       status: {
         loggingIn: false
-      }
+      },
+      username: "",
+      password: ""
     };
+  },
+  methods: {
+    onSubmit(email, password) {
+      this.$store
+        .dispatch(LOGIN, {
+          username: email,
+          password: password
+        })
+        .then(() => this.$router.push({ name: "home" }));
+    }
   }
-  // computed: {
-  //     ...mapState('account', ['status'])
-  // },
-  // created () {
-  //     // reset login status
-  //     this.logout();
-  // },
-  // methods: {
-  //     ...mapActions('account', ['login', 'logout']),
-  //     handleSubmit (e) {
-  //         this.submitted = true;
-  //         const { username, password } = this;
-  //         if (username && password) {
-  //             this.login({ username, password })
-  //         }
-  //     }
-  // }
 };
 </script>
 <style lang="scss">

@@ -28,7 +28,7 @@
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
+          <li class="nav-item" v-if="!currentUser.username">
             <a
               class="nav-link"
               href="#/login"
@@ -39,13 +39,16 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!currentUser.username">
             <a
               class="nav-link"
               href="#/register"
               v-on:click="setActive('signup')"
               :class="{ active: isActive('register') }"
             >Register</a>
+          </li>
+          <li class="nav-item" v-if="currentUser.username">
+            <a class="nav-link" href="#" v-on:click="logout()">Logout</a>
           </li>
         </ul>
       </form>
@@ -58,6 +61,8 @@
 }
 </style>
 <script>
+import { mapGetters } from "vuex";
+import { LOGOUT } from "@/store/actions.type";
 export default {
   data() {
     return {
@@ -70,7 +75,18 @@ export default {
     },
     setActive: function(menuItem) {
       this.activeItem = menuItem; // no need for Vue.set()
+    },
+    logout: function() {
+      this.$store.dispatch(LOGOUT).then(() => {
+        this.$router.push({ name: "home" });
+      });
     }
+  },
+  mounted() {
+    // this.isAuthenticated = localStorage.getItem("isAuthenticated");
+  },
+  computed: {
+    ...mapGetters(["currentUser", "isAuthenticated"])
   }
 };
 </script>
