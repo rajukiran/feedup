@@ -47,7 +47,7 @@ export default {
   created() {
     var that = this;
     EventBus.$on("feed_content_change", () => {
-      this.getFeedContent();
+      that.getFeedContent();
     });
   },
   mounted() {
