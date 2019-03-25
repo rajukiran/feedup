@@ -1,6 +1,10 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#/">
+    <a 
+      class="navbar-brand" 
+      href="#/"
+      v-on:click="setActive('home')"
+      :class="{ active: isActive('home') }">
       <img class="app-logo" src="../assets/feed-up.png">
     </a>
 
@@ -26,9 +30,9 @@
           >About</a>
         </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
+      <form class="form-inline my-2 my-lg-0" v-if="!currentUser.username">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item" v-if="!currentUser.username">
+          <li class="nav-item">
             <a
               class="nav-link"
               href="#/login"
@@ -39,7 +43,7 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item" v-if="!currentUser.username">
+          <li class="nav-item">
             <a
               class="nav-link"
               href="#/register"
@@ -47,7 +51,11 @@
               :class="{ active: isActive('register') }"
             >Register</a>
           </li>
-          <li class="nav-item" v-if="currentUser.username">
+        </ul>
+      </form>
+      <form class="form-inline my-2 my-lg-0" v-if="currentUser.username">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
             <a class="nav-link" href="#" v-on:click="logout()">Logout</a>
           </li>
         </ul>

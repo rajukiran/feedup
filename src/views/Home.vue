@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
       <LeftPanel/>
-      <div class="col-10 bg-light feed-content">
-        <form>
+      <div class="col-8 bg-light feed-content">
+        <form v-on:submit.prevent="postFeed(title, postMessage)">
           <label for="validationServer03">Post Feed</label>
           <div class="form-group">
             <input
@@ -11,7 +11,7 @@
               class="form-control"
               id="validationServer03"
               placeholder="Title"
-              required
+              v-model="title"
             >
           </div>
           <div class="form-group">
@@ -20,10 +20,10 @@
               id="validationServer03"
               rows="3"
               placeholder="Message"
-              required
+              v-model="postMessage"
             ></textarea>
           </div>
-          <input type="button" class="btn btn-primary btnSeccion" id="btnSeccion3" value="Feed Up">
+          <button class="btn btn-lg btn-primary pull-xs-right">Feed Up</button>
         </form>
         <FeedContent/>
       </div>
@@ -37,6 +37,8 @@
 import LeftPanel from "../components/LeftPanel";
 import RightPanel from "../components/RightPanel";
 import FeedContent from "../components/FeedContent";
+import JwtService from "@/common/jwt.service";
+import ApiService from "@/common/api.service";
 export default {
   name: "home",
   components: {
@@ -46,14 +48,35 @@ export default {
   },
   data() {
     return {
-      isAuthenticated: false
+      title: '',
+      postMessage: ''
     };
   },
-  mounted() {
-    var that = this;
-    this.isAuthenticated = localStorage.getItem("isAuthenticated");
-    if (this.isAuthenticated) {
-      that.$router.push("/dashboard");
+  methods: {
+    // var that = this;
+    // this.isAuthenticated = localStorage.getItem("isAuthenticated");
+    // if (this.isAuthenticated) {
+    //   that.$router.push("/dashboard");
+    // }
+    postFeed(title, message) {
+      if (JwtService.getToken()) {
+        ApiService.setHeader();
+        ApiService.post("test/post", {
+          title: title,
+          postdata: message
+        })
+          .then(function(data) {
+              // that.items = data.data.feeds;
+              console.log(data);
+            })
+          .catch(({
+            response
+          }) => {
+            console.log(response);
+          });
+      } else {
+        this.$router.push({ name: "login" });
+      }
     }
   }
 };

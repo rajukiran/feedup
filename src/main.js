@@ -6,7 +6,7 @@ import VueRouter from 'vue-router';
 import {
   CHECK_AUTH
 } from "./store/actions.type";
-import ApiService from "./services/api.service";
+import ApiService from "./common/api.service";
 
 
 window._ = require('lodash');

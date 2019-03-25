@@ -70,7 +70,7 @@ import { REGISTER } from "@/store/actions.type";
 // import FeedService from "../services/feed-service.js";
 
 export default {
-  name: "register",
+  // name: "register",
   data() {
     return {
       user: {

@@ -6,6 +6,8 @@
 </template>
 <script>
 import Header from "./components/Header";
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 export default {
   components: {
     Header

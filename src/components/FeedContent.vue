@@ -1,5 +1,9 @@
 <template>
-  <div class="feed-content">
+  <div class="col-10 feed-content">
+    <loading :active.sync="isLoading" 
+        :can-cancel="true" 
+        :on-cancel="onCancel"
+        :is-full-page="fullPage"></loading>
     <ul class="list-unstyled">
       <li class="media" v-for="(item, index) in items" :key="index">
         <img
@@ -19,17 +23,46 @@
 </template>
 <script>
 import FeedEvents from "./FeedEvents";
-import feed_data from "../assets/sample-data/feedcontent.json";
+import axios from 'axios';
+import Loading  from 'vue-loading-overlay';
+import { FEEDS } from "@/store/actions.type";
+import JwtService from "@/common/jwt.service";
+import ApiService from "@/common/api.service";
 export default {
   components: {
-    FeedEvents
+    FeedEvents,
+    Loading
   },
   data() {
     return {
-      items: feed_data
+      items: [],
+      isLoading: false,
+      fullPage: true
     };
   },
-  methods: {}
+  mounted() {
+    this.getFeedContent();
+  },
+  methods: {
+    getFeedContent() {
+      var that = this;
+      if (JwtService.getToken()) {
+      ApiService.setHeader();
+      ApiService.get("test/posts")
+        .then(function(data) {
+            that.items = data.data.feeds;
+          })
+        .catch(({
+          response
+        }) => {
+          // console.log(response.data);
+        });
+    }
+    },
+    onCancel() {
+      console.log('User cancelled the loader.')
+    }
+  }
 };
 </script>
 
