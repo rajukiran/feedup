@@ -1,9 +1,11 @@
 <template>
   <div class="col-10 feed-content">
-    <loading :active.sync="isLoading" 
-        :can-cancel="true" 
-        :on-cancel="onCancel"
-        :is-full-page="fullPage"></loading>
+    <loading
+      :active.sync="isLoading"
+      :can-cancel="true"
+      :on-cancel="onCancel"
+      :is-full-page="fullPage"
+    ></loading>
     <ul class="list-unstyled">
       <li class="media" v-for="(item, index) in items" :key="index">
         <img
@@ -23,9 +25,11 @@
 </template>
 <script>
 import FeedEvents from "./FeedEvents";
-import axios from 'axios';
-import Loading  from 'vue-loading-overlay';
-import { FEEDS } from "@/store/actions.type";
+import { EventBus } from "../event-bus";
+
+// import axios from "axios";
+import Loading from "vue-loading-overlay";
+// import { FEEDS } from "@/store/actions.type";
 import JwtService from "@/common/jwt.service";
 import ApiService from "@/common/api.service";
 export default {
@@ -40,6 +44,12 @@ export default {
       fullPage: true
     };
   },
+  created() {
+    var that = this;
+    EventBus.$on("feed_content_change", () => {
+      this.getFeedContent();
+    });
+  },
   mounted() {
     this.getFeedContent();
   },
@@ -47,20 +57,19 @@ export default {
     getFeedContent() {
       var that = this;
       if (JwtService.getToken()) {
-      ApiService.setHeader();
-      ApiService.get("test/posts")
-        .then(function(data) {
+        ApiService.setHeader();
+        ApiService.get("test/posts").then(
+          function(data) {
             that.items = data.data.feeds;
-          })
-        .catch(({
-          response
-        }) => {
-          // console.log(response.data);
-        });
-    }
+          },
+          function(err) {
+            console.log(err);
+          }
+        );
+      }
     },
     onCancel() {
-      console.log('User cancelled the loader.')
+      console.log("User cancelled the loader.");
     }
   }
 };

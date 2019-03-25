@@ -30,19 +30,21 @@ const getters = {
 
 const actions = {
   [LOGIN](context, credentials) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       ApiService.post("auth/signin", credentials)
         .then(({
           data
         }) => {
           context.commit(SET_AUTH, data);
           resolve(data);
-        })
-        .catch(({
-          response
-        }) => {
-          context.commit(SET_ERROR, response.data.errors);
+        }, function (err) {
+          reject(err);
         });
+      // .catch(({
+      //   response
+      // }) => {
+      //   context.commit(SET_ERROR, response.data);
+      // });
     });
   },
   [LOGOUT](context) {
@@ -54,14 +56,9 @@ const actions = {
         .then(({
           data
         }) => {
-          context.commit(SET_AUTH, data);
           resolve(data);
-        })
-        .catch(({
-          response
-        }) => {
-          context.commit(SET_ERROR, response.data);
-          reject(response);
+        }, function (err) {
+          reject(err);
         });
     });
   },
@@ -72,9 +69,9 @@ const actions = {
         .then(({
           data
         }) => {
-            data.user.accessToken = JwtService.getToken();
-            context.commit(SET_AUTH, data.user);
-          })
+          data.user.accessToken = JwtService.getToken();
+          context.commit(SET_AUTH, data.user);
+        })
         .catch(({
           response
         }) => {

@@ -11,6 +11,7 @@
           id="validationServer03"
           placeholder="Username"
           v-model="username"
+          required
         >
       </div>
       <div class="form-group">
@@ -20,6 +21,7 @@
           id="validationServer03"
           placeholder="Password"
           v-model="password"
+          required
         >
       </div>
       <!-- <div class="form-group" v-if="loginValidation.status">
@@ -58,7 +60,22 @@ export default {
           username: email,
           password: password
         })
-        .then(() => this.$router.push({ name: "home" }));
+        // .then(
+        //   function(res) {
+        //     this.$router.push({ name: "home" });
+        //   },
+        //   function(err) {
+        //     alert(err.response.data);
+        //   }
+        // );
+        .then(() => this.$router.push({ name: "home" }))
+        .catch(err => {
+          if (err.response.status === 404) {
+            alert(err.response.data);
+          } else {
+            alert(err.response.data.reason);
+          }
+        });
     }
   }
 };

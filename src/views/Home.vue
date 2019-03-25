@@ -34,6 +34,7 @@
 
 <script>
 // @ is an alias to /src
+import { EventBus } from "../event-bus";
 import LeftPanel from "../components/LeftPanel";
 import RightPanel from "../components/RightPanel";
 import FeedContent from "../components/FeedContent";
@@ -48,32 +49,26 @@ export default {
   },
   data() {
     return {
-      title: '',
-      postMessage: ''
+      title: "",
+      postMessage: ""
     };
   },
   methods: {
-    // var that = this;
-    // this.isAuthenticated = localStorage.getItem("isAuthenticated");
-    // if (this.isAuthenticated) {
-    //   that.$router.push("/dashboard");
-    // }
     postFeed(title, message) {
       if (JwtService.getToken()) {
         ApiService.setHeader();
         ApiService.post("test/post", {
           title: title,
           postdata: message
-        })
-          .then(function(data) {
-              // that.items = data.data.feeds;
-              console.log(data);
-            })
-          .catch(({
-            response
-          }) => {
-            console.log(response);
-          });
+        }).then(
+          function(data) {
+            EventBus.$emit("feed_content_change");
+            alert(data.data);
+          },
+          function(err) {
+            console.log(err);
+          }
+        );
       } else {
         this.$router.push({ name: "login" });
       }

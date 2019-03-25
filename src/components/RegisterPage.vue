@@ -108,7 +108,10 @@ export default {
       this.user.roles = ["user"];
       this.$store
         .dispatch(REGISTER, this.user)
-        .then(() => this.$router.push({ name: "home" }));
+        .then(() => this.$router.push({ name: "login" }))
+        .catch(({ response }) => {
+          console.log(response);
+        });
     }
   }
 };
